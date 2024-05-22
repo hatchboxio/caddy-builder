@@ -7,7 +7,7 @@
 
 set -e
 
-go_version="1.22.3"
+go_version="${GOLANG_VERSION:-1.22.3}"
 arch=$(dpkg --print-architecture)
 tag=$(curl -H "Accept: application/json" -sL 'https://github.com/caddyserver/xcaddy/releases/latest' | python3 -c "import sys, json; print(json.load(sys.stdin)['tag_name'])")
 version="${tag:1}"
