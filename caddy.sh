@@ -27,6 +27,12 @@ rm xcaddy_${version}_linux_$arch.tar.gz
 # panic: internal error: can't find reason for requirement on google.golang.org/appengine@v1.6.6
 # panic: internal error: can't find reason for requirement on google.golang.org/pprof
 
+# DNS packages that don't currently work:
+# # github.com/libdns/netlify
+# /root/go/pkg/mod/github.com/libdns/netlify@v1.0.2/models.go:25:13: cannot use int(r.Priority) (value of type int) as uint value in struct literal
+# github.com/libdns/porkbun
+# /root/go/pkg/mod/github.com/libdns/porkbun@v0.1.2/models.go:51:13: cannot use priority (variable of type int) as uint value in struct literal
+
 ./xcaddy build ${1:-latest} \
   --with github.com/caddy-dns/alidns \
   --with github.com/caddy-dns/azure \
@@ -38,9 +44,7 @@ rm xcaddy_${version}_linux_$arch.tar.gz
   --with github.com/caddy-dns/gandi \
   --with github.com/caddy-dns/hetzner \
   --with github.com/caddy-dns/namecheap \
-  --with github.com/caddy-dns/netlify \
   --with github.com/caddy-dns/ovh \
-  --with github.com/caddy-dns/porkbun \
   --with github.com/caddy-dns/route53 \
   --with github.com/caddy-dns/scaleway \
   --with github.com/caddy-dns/vercel \
