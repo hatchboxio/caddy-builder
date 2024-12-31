@@ -7,15 +7,15 @@
 
 set -e
 
-go_version="${GOLANG_VERSION:-1.22.3}"
 arch=$(dpkg --print-architecture)
 tag=$(curl -H "Accept: application/json" -sL 'https://github.com/caddyserver/xcaddy/releases/latest' | python3 -c "import sys, json; print(json.load(sys.stdin)['tag_name'])")
 version="${tag:1}"
+go_version=$(curl https://go.dev/VERSION?m=text | head -n1)
 
-wget https://go.dev/dl/go${go_version}.linux-$arch.tar.gz
+wget "https://dl.google.com/go/$go_version.linux-$arch.tar.gz"
 rm -rf /usr/local/go
-tar -C /usr/local -xzf go${go_version}.linux-$arch.tar.gz
-rm go${go_version}.linux-$arch.tar.gz
+tar -C /usr/local -xzf ${go_version}.linux-$arch.tar.gz
+rm ${go_version}.linux-$arch.tar.gz
 
 export PATH=$PATH:/usr/local/go/bin
 
@@ -27,15 +27,10 @@ rm xcaddy_${version}_linux_$arch.tar.gz
 # panic: internal error: can't find reason for requirement on google.golang.org/appengine@v1.6.6
 # panic: internal error: can't find reason for requirement on google.golang.org/pprof
 
-# DNS packages that don't currently work:
-# # github.com/libdns/netlify
-# /root/go/pkg/mod/github.com/libdns/netlify@v1.0.2/models.go:25:13: cannot use int(r.Priority) (value of type int) as uint value in struct literal
-# github.com/libdns/porkbun
-# /root/go/pkg/mod/github.com/libdns/porkbun@v0.1.2/models.go:51:13: cannot use priority (variable of type int) as uint value in struct literal
-
 ./xcaddy build ${1:-latest} \
   --with github.com/caddy-dns/alidns \
   --with github.com/caddy-dns/azure \
+  --with github.com/caddy-dns/bunny \
   --with github.com/caddy-dns/cloudflare \
   --with github.com/caddy-dns/digitalocean \
   --with github.com/caddy-dns/dnsimple \
@@ -43,13 +38,15 @@ rm xcaddy_${version}_linux_$arch.tar.gz
   --with github.com/caddy-dns/duckdns \
   --with github.com/caddy-dns/gandi \
   --with github.com/caddy-dns/hetzner \
+  --with github.com/caddy-dns/linode \
   --with github.com/caddy-dns/namecheap \
   --with github.com/caddy-dns/ovh \
+  --with github.com/caddy-dns/porkbun \
   --with github.com/caddy-dns/route53 \
   --with github.com/caddy-dns/scaleway \
-  --with github.com/caddy-dns/vercel \
   --with github.com/caddy-dns/vultr \
   --with github.com/caddy-dns/godaddy \
-  --with github.com/caddy-dns/googleclouddns
+  --with github.com/caddy-dns/googleclouddns \
+  --with github.com/Wafris/wafris-caddy
 
 rm xcaddy
