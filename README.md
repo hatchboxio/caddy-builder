@@ -9,7 +9,6 @@ It also allows you to specify the version of Caddy you want to compile. This is 
 ## Usage
 
 ```bash
-scp caddy.sh user@host:~
-ssh user@host
-bash caddy.sh
+scp caddy.sh root@host:~
+ssh root@host "bash caddy.sh"
 ```
