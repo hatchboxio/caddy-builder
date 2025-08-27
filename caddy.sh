@@ -46,7 +46,6 @@ rm xcaddy_${version}_linux_$arch.tar.gz
   --with github.com/caddy-dns/scaleway \
   --with github.com/caddy-dns/vultr \
   --with github.com/caddy-dns/godaddy \
-  --with github.com/caddy-dns/googleclouddns \
-  --with github.com/Wafris/wafris-caddy
+  --with github.com/caddy-dns/googleclouddns
 
 rm xcaddy
