@@ -34,7 +34,6 @@ rm xcaddy_${version}_linux_$arch.tar.gz
   --with github.com/caddy-dns/cloudflare \
   --with github.com/caddy-dns/digitalocean \
   --with github.com/caddy-dns/dnsimple \
-  --with github.com/caddy-dns/dnspod \
   --with github.com/caddy-dns/duckdns \
   --with github.com/caddy-dns/gandi \
   --with github.com/caddy-dns/hetzner \
