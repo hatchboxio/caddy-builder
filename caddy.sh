@@ -27,8 +27,6 @@ rm xcaddy_${version}_linux_$arch.tar.gz
 # panic: internal error: can't find reason for requirement on google.golang.org/appengine@v1.6.6
 # panic: internal error: can't find reason for requirement on google.golang.org/pprof
 
-#  --with github.com/caddy-dns/linode \
-
 ./xcaddy build ${1:-latest} \
   --with github.com/caddy-dns/alidns \
   --with github.com/caddy-dns/azure \
@@ -39,6 +37,7 @@ rm xcaddy_${version}_linux_$arch.tar.gz
   --with github.com/caddy-dns/duckdns \
   --with github.com/caddy-dns/gandi \
   --with github.com/caddy-dns/hetzner \
+  --with github.com/caddy-dns/linode \
   --with github.com/caddy-dns/namecheap \
   --with github.com/caddy-dns/ovh \
   --with github.com/caddy-dns/porkbun \
