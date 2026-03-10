@@ -12,16 +12,16 @@ tag=$(curl -H "Accept: application/json" -sL 'https://github.com/caddyserver/xca
 version="${tag:1}"
 go_version=$(curl https://go.dev/VERSION?m=text | head -n1)
 
-wget --quiet "https://dl.google.com/go/$go_version.linux-$arch.tar.gz"
+wget --no-verbose "https://dl.google.com/go/$go_version.linux-$arch.tar.gz"
 rm -rf ./go
 tar -C . -xzf ${go_version}.linux-$arch.tar.gz
 rm ${go_version}.linux-$arch.tar.gz
 
-export PATH=$PATH:./go/bin
-
-wget https://github.com/caddyserver/xcaddy/releases/download/${tag}/xcaddy_${version}_linux_$arch.tar.gz
+wget --no-verbose https://github.com/caddyserver/xcaddy/releases/download/${tag}/xcaddy_${version}_linux_$arch.tar.gz
 tar -xvf xcaddy_${version}_linux_$arch.tar.gz
 rm xcaddy_${version}_linux_$arch.tar.gz
+
+export PATH=$PATH:./go/bin
 
 # Godaddy fails to compile if it's listed in alphabetical order
 # panic: internal error: can't find reason for requirement on google.golang.org/appengine@v1.6.6
