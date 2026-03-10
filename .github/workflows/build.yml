@@ -27,3 +27,18 @@ jobs:
         with:
           name: caddy-${{ steps.build_caddy.outputs.caddy_version }}-${{ runner.arch }}
           path: caddy
+
+  create-release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Automatically provided token
+        run: |
+          echo "${{ needs.build.outputs.caddy_version }}"
+          gh release create "${{ needs.build.outputs.caddy_version }}" --title "${{ needs.build.outputs.caddy_version }}" --latest
+          gh release upload "${{ needs.build.outputs.caddy_version }}" caddy-${{ needs.build.outputs.caddy_version }}-X64 --clobber --repo "${{ github.repository }}"
+          gh release upload "${{ needs.build.outputs.caddy_version }}" caddy-${{ needs.build.outputs.caddy_version }}-ARM64 --clobber --repo "${{ github.repository }}"
