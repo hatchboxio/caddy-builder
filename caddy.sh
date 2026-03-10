@@ -13,11 +13,11 @@ version="${tag:1}"
 go_version=$(curl https://go.dev/VERSION?m=text | head -n1)
 
 wget "https://dl.google.com/go/$go_version.linux-$arch.tar.gz"
-rm -rf /usr/local/go
-tar -C /usr/local -xzf ${go_version}.linux-$arch.tar.gz
+rm -rf ./go
+tar -C . -xzf ${go_version}.linux-$arch.tar.gz
 rm ${go_version}.linux-$arch.tar.gz
 
-export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:./go/bin
 
 wget https://github.com/caddyserver/xcaddy/releases/download/${tag}/xcaddy_${version}_linux_$arch.tar.gz
 tar -xvf xcaddy_${version}_linux_$arch.tar.gz
