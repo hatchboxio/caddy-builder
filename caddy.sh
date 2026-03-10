@@ -12,7 +12,7 @@ tag=$(curl -H "Accept: application/json" -sL 'https://github.com/caddyserver/xca
 version="${tag:1}"
 go_version=$(curl https://go.dev/VERSION?m=text | head -n1)
 
-wget "https://dl.google.com/go/$go_version.linux-$arch.tar.gz"
+wget --quiet "https://dl.google.com/go/$go_version.linux-$arch.tar.gz"
 rm -rf ./go
 tar -C . -xzf ${go_version}.linux-$arch.tar.gz
 rm ${go_version}.linux-$arch.tar.gz
