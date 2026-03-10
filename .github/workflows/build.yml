@@ -12,9 +12,10 @@ jobs:
           - runner: ubuntu-24.04-arm
 
     runs-on: ${{ matrix.runner }}
+    outputs:
+      caddy_version: ${{ steps.build_caddy.outputs.caddy_version }}
     steps:
       - uses: actions/checkout@v6
-
       - name: Build Caddy
         id: build_caddy
         run: |
@@ -22,8 +23,7 @@ jobs:
           chmod +x ./caddy
           caddy_version=$(./caddy version | cut -d " " -f1 | cut -c2-)
           echo "caddy_version=$caddy_version" >> "$GITHUB_OUTPUT"
-
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: caddy-${{ steps.build_caddy.outputs.caddy_version }}-${{ runner.arch }}
           path: caddy
