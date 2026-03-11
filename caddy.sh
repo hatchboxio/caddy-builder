@@ -13,7 +13,7 @@ wget --no-verbose "https://dl.google.com/go/$go_version.linux-$arch.tar.gz"
 rm -rf ./go
 tar -C . -xzf ${go_version}.linux-$arch.tar.gz
 rm ${go_version}.linux-$arch.tar.gz
-export PATH=./go/bin:$PATH
+export PATH=$PWD/go/bin:$PATH
 
 # Install xcaddy
 tag=$(curl -sL 'https://api.github.com/repos/caddyserver/xcaddy/releases/latest' | python3 -c "import sys, json; print(json.load(sys.stdin)['tag_name'])")
@@ -47,5 +47,3 @@ rm xcaddy_${version}_linux_$arch.tar.gz
   --with github.com/caddy-dns/vultr \
   --with github.com/caddy-dns/godaddy \
   --with github.com/caddy-dns/googleclouddns
-
-rm xcaddy
