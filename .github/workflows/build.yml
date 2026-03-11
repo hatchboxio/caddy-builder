@@ -19,7 +19,7 @@ jobs:
       - name: Build Caddy
         id: build_caddy
         run: |
-          arch="$(dpkg --print-architecture)
+          arch="$(dpkg --print-architecture)"
           echo "ARCH=$arch" >> $GITHUB_ENV
 
           bash caddy.sh
