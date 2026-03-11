@@ -24,7 +24,7 @@ jobs:
           bash caddy.sh
           chmod +x caddy
 
-          caddy_version=$(caddy version | cut -d " " -f1 | cut -c2-)
+          caddy_version="$(./caddy version | cut -d " " -f1 | cut -c2-)"
           echo "caddy_version=$caddy_version" >> "$GITHUB_OUTPUT"
 
           mv caddy "caddy-${caddy_version}-${{ env.ARCH }}"
