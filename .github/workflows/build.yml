@@ -48,15 +48,14 @@ jobs:
             echo "Deleting release $release_id"
             gh api -X DELETE "repos/${{ github.repository }}/releases/$release_id" || true
           done
+
           # Also delete the tag if it exists
           gh api -X DELETE "repos/${{ github.repository }}/git/refs/tags/${{ needs.build.outputs.caddy_version }}" 2>/dev/null || true
 
-
-          # Create release
           gh release create "${{ needs.build.outputs.caddy_version }}" --title "${{ needs.build.outputs.caddy_version }}" --latest
       - name: Upload artifacts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Automatically provided token
         run: |
           gh release upload "${{ needs.build.outputs.caddy_version }}" caddy-${{ needs.build.outputs.caddy_version }}-X64/caddy#caddy-${{ needs.build.outputs.caddy_version }}-X64  --clobber --repo "${{ github.repository }}"
-          gh release upload "${{ needs.build.outputs.caddy_version }}" caddy-${{ needs.build.outputs.caddy_version }}-ARM64/caddycaddy-${{ needs.build.outputs.caddy_version }}-ARM64 --clobber --repo "${{ github.repository }}"
+          gh release upload "${{ needs.build.outputs.caddy_version }}" caddy-${{ needs.build.outputs.caddy_version }}-ARM64/caddy#caddy-${{ needs.build.outputs.caddy_version }}-ARM64 --clobber --repo "${{ github.repository }}"
