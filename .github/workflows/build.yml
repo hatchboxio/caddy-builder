@@ -36,8 +36,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: actions/download-artifact@v5
-        with:
-          merge-multiple: true
       - run: ls -R
       - name: Create release
         env:
@@ -60,5 +58,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Automatically provided token
         run: |
-          gh release upload "${{ needs.build.outputs.caddy_version }}" caddy-${{ needs.build.outputs.caddy_version }}-X64 --clobber --repo "${{ github.repository }}"
-          gh release upload "${{ needs.build.outputs.caddy_version }}" caddy-${{ needs.build.outputs.caddy_version }}-ARM64 --clobber --repo "${{ github.repository }}"
+          gh release upload "${{ needs.build.outputs.caddy_version }}" caddy-${{ needs.build.outputs.caddy_version }}-X64/caddy#caddy-${{ needs.build.outputs.caddy_version }}-X64  --clobber --repo "${{ github.repository }}"
+          gh release upload "${{ needs.build.outputs.caddy_version }}" caddy-${{ needs.build.outputs.caddy_version }}-ARM64/caddycaddy-${{ needs.build.outputs.caddy_version }}-ARM64 --clobber --repo "${{ github.repository }}"
