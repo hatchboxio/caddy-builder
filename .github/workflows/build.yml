@@ -23,10 +23,11 @@ jobs:
           chmod +x ./caddy
           caddy_version=$(./caddy version | cut -d " " -f1 | cut -c2-)
           echo "caddy_version=$caddy_version" >> "$GITHUB_OUTPUT"
+          mv caddy caddy-${caddy_version}-${{ runner-arch }}
       - uses: actions/upload-artifact@v6
         with:
           name: caddy-${{ steps.build_caddy.outputs.caddy_version }}-${{ runner.arch }}
-          path: caddy
+          path: caddy-${{ steps.build_caddy.outputs.caddy_version }}-${{ runner.arch }}
 
   create-release:
     needs: build
@@ -38,13 +39,12 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: actions/download-artifact@v5
-      - run: ls -R
+        with:
+          merge-multiple: true
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "$VERSION"
-
           # Delete ALL existing releases matching this version (handles orphaned releases)
           for release_id in $(gh api repos/${{ github.repository }}/releases --paginate --jq ".[] | select(.name == \"${VERSION}\" or .tag_name == \"${VERSION}\") | .id"); do
             echo "Deleting release $release_id"
@@ -54,9 +54,6 @@ jobs:
           # Also delete the tag if it exists
           gh api -X DELETE "repos/${{ github.repository }}/git/refs/tags/${VERSION}" 2>/dev/null || true
 
-          gh release create "${VERSION}" --title "${VERSION}" --latest
-      - name: Upload artifacts
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release upload "${VERSION}" caddy-${VERSION}-X64/caddy#caddy-${VERSION}-X64 caddy-${VERSION}-ARM64/caddy#caddy-${VERSION}-ARM64
+          ls -R
+
+          gh release create "${VERSION}" caddy-${VERSION}-X64#caddy-${VERSION}-X64 caddy-${VERSION}-ARM64#caddy-${VERSION}-ARM64 --title "${VERSION}"
