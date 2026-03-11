@@ -33,29 +33,30 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      VERSION: ${{ needs.build.outputs.caddy_version }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/download-artifact@v5
       - run: ls -R
       - name: Create release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Automatically provided token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "${{ needs.build.outputs.caddy_version }}"
+          echo "$VERSION"
 
           # Delete ALL existing releases matching this version (handles orphaned releases)
-          for release_id in $(gh api repos/${{ github.repository }}/releases --paginate --jq ".[] | select(.name == \"${{ needs.build.outputs.caddy_version }}\" or .tag_name == \"${{ needs.build.outputs.caddy_version }}\") | .id"); do
+          for release_id in $(gh api repos/${{ github.repository }}/releases --paginate --jq ".[] | select(.name == \"${VERSION}\" or .tag_name == \"${VERSION}\") | .id"); do
             echo "Deleting release $release_id"
             gh api -X DELETE "repos/${{ github.repository }}/releases/$release_id" || true
           done
 
           # Also delete the tag if it exists
-          gh api -X DELETE "repos/${{ github.repository }}/git/refs/tags/${{ needs.build.outputs.caddy_version }}" 2>/dev/null || true
+          gh api -X DELETE "repos/${{ github.repository }}/git/refs/tags/${VERSION}" 2>/dev/null || true
 
-          gh release create "${{ needs.build.outputs.caddy_version }}" --title "${{ needs.build.outputs.caddy_version }}" --latest
+          gh release create "${VERSION}" --title "${VERSION}" --latest
       - name: Upload artifacts
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Automatically provided token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload "${{ needs.build.outputs.caddy_version }}" caddy-${{ needs.build.outputs.caddy_version }}-X64/caddy#caddy-${{ needs.build.outputs.caddy_version }}-X64  --clobber --repo "${{ github.repository }}"
-          gh release upload "${{ needs.build.outputs.caddy_version }}" caddy-${{ needs.build.outputs.caddy_version }}-ARM64/caddy#caddy-${{ needs.build.outputs.caddy_version }}-ARM64 --clobber --repo "${{ github.repository }}"
+          gh release upload "${VERSION}" caddy-${VERSION}-X64/caddy#caddy-${VERSION}-X64 caddy-${VERSION}-ARM64/caddy#caddy-${VERSION}-ARM64--clobber --repo "${{ github.repository }}"
