@@ -1,27 +1,28 @@
 #!/bin/bash
 #
-# Copy to server
 # bash caddy.sh latest
-# bash caddy.sh branch-name
-# bash caddy.sh sha
+# bash caddy.sh v2.11.2
 
 set -e
 
 arch=$(dpkg --print-architecture)
-tag=$(curl -H "Accept: application/json" -sL 'https://github.com/caddyserver/xcaddy/releases/latest' | python3 -c "import sys, json; print(json.load(sys.stdin)['tag_name'])")
-version="${tag:1}"
-go_version=$(curl https://go.dev/VERSION?m=text | head -n1)
 
+# Install Go
+go_version=$(curl https://go.dev/VERSION?m=text | head -n1)
 wget --no-verbose "https://dl.google.com/go/$go_version.linux-$arch.tar.gz"
 rm -rf ./go
 tar -C . -xzf ${go_version}.linux-$arch.tar.gz
 rm ${go_version}.linux-$arch.tar.gz
+export PATH=./go/bin:$PATH
+
+# Install xcaddy
+tag=$(curl -sL 'https://api.github.com/repos/caddyserver/xcaddy/releases/latest' | python3 -c "import sys, json; print(json.load(sys.stdin)['tag_name'])")
+version="${tag:1}"
 
 wget --no-verbose https://github.com/caddyserver/xcaddy/releases/download/${tag}/xcaddy_${version}_linux_$arch.tar.gz
 tar -xvf xcaddy_${version}_linux_$arch.tar.gz
 rm xcaddy_${version}_linux_$arch.tar.gz
 
-export PATH=$PATH:./go/bin
 
 # Godaddy fails to compile if it's listed in alphabetical order
 # panic: internal error: can't find reason for requirement on google.golang.org/appengine@v1.6.6
