@@ -59,4 +59,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload "${VERSION}" caddy-${VERSION}-X64/caddy#caddy-${VERSION}-X64 caddy-${VERSION}-ARM64/caddy#caddy-${VERSION}-ARM64--clobber --repo "${{ github.repository }}"
+          gh release upload "${VERSION}" caddy-${VERSION}-X64/caddy#caddy-${VERSION}-X64 caddy-${VERSION}-ARM64/caddy#caddy-${VERSION}-ARM64 --clobber --repo "${{ github.repository }}"
