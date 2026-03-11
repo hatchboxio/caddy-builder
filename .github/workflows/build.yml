@@ -2,6 +2,10 @@ name: Build
 
 on:
   workflow_dispatch:
+    inputs:
+      caddy_version:
+        description: "Caddy version to build"
+        default: "latest"
 
 jobs:
   build:
@@ -21,7 +25,7 @@ jobs:
       - name: Build Caddy
         id: build_caddy
         run: |
-          bash caddy.sh
+          bash caddy.sh ${{ github.events.inputs.caddy_version }}
           chmod +x caddy
 
           caddy_version="$(./caddy version | cut -d " " -f1 | cut -c2-)"
