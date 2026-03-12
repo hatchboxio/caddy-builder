@@ -36,6 +36,7 @@ jobs:
         with:
           name: caddy-${{ steps.build_caddy.outputs.caddy_version }}-${{ env.ARCH }}
           path: caddy-${{ steps.build_caddy.outputs.caddy_version }}-${{ env.ARCH }}
+          retention-days: 1
 
   create-release:
     needs: build
