@@ -37,7 +37,7 @@ rm xcaddy_${version}_linux_$arch.tar.gz
   --with github.com/caddy-dns/dnsimple \
   --with github.com/caddy-dns/duckdns \
   --with github.com/caddy-dns/gandi \
-  --with github.com/caddy-dns/hetzner/v2 \
+  --with github.com/caddy-dns/hetzner \
   --with github.com/caddy-dns/linode \
   --with github.com/caddy-dns/namecheap \
   --with github.com/caddy-dns/ovh \
